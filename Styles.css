@@ -142,7 +142,7 @@ button:hover{
 
 .btn-translate{
   background:linear-gradient(-90deg,#3c3b6e,#7876da);
-  color:white;
+  color:black;
 }
   
 .btn-pronounce{
@@ -170,22 +170,45 @@ button:hover{
 
 .actions{
   display:flex;
-  width:100%;/* LOS PONE EN HORIZONTAL */
+  width:100%;
   align-items:center;
-  gap:6px;
+  gap:0;                 /*  sin espacios entre botones */
   margin-top:5px;
-  flex-wrap:wrap;/* para que no se rompa en móviles */
+
   background:#e6e6e6; 
-  border-radius:5px; 
+  border-radius:5px;    /*  estilo píldora */
+  padding:4px;
 }
+
+/*  BOTÓN GRANDE */
+.btn-translate{
+  flex:2;
+  justify-content:flex-start;
+  padding-left:12px;
+}
+
+/* BOTONES PEQUEÑOS IGUALES */
+.btn-pronounce,
+.btn-mic{
+  flex:1;
+}
+
+/* TODOS LOS BOTONES */
 .actions button{
-  flex:1;              /*todos ocupan el mismo espacio */
-  text-align:center;
   background:transparent;
-  
+  border:none;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  text-align:center;
+  font-size:14px;
 }
+
+/* separadores suaves */
 .actions button:not(:last-child){
-  border-right:2px solid #ccc;
+  border-right:1px solid #ccc;
 }
 /* RESPONSIVE */
 @media(max-width:600px){
