@@ -115,11 +115,13 @@ function openBook(index){
   document.getElementById("books").style.display="none";
   document.getElementById("reader").style.display="flex";
 
+  const image = document.getElementById("bookImage");
   const content=document.getElementById("content");
   const title=document.getElementById("bookTitle");
 
   content.innerHTML="";
   title.innerText=booksData[index].title;
+  image.src = booksData[index].img;
 
   booksData[index].content.forEach((p,i)=>{
     content.innerHTML+=`
