@@ -154,6 +154,7 @@ button:hover{
   background:#3c3b6e;
   color:white;
   margin-bottom:15px;
+  font-weight:bold;
 }
 
 .btn-translate{
@@ -207,7 +208,7 @@ button:hover{
 .btn-pronounce,
 .btn-mic{
   flex:1;
-  font-size:22px;   /* 👈 tamaño */
+  font-size:22px;   /*tamaño */
   color:#3c3b6e;
 }
 
@@ -227,6 +228,27 @@ button:hover{
 /* separadores suaves */
 .actions button:not(:last-child){
   border-right:1px solid #ccc;
+}
+.word{
+  transition:0.3s;
+  cursor:pointer;
+}
+
+/* palabra correcta */
+.correct{
+  color:#3c3b6e;
+  font-weight:bold;
+}
+
+/* palabra incorrecta */
+.incorrect{
+  color:#b2223c;
+}
+
+/* palabra actual */
+.active{
+  background:#ffeaa7;
+  border-radius:4px;
 }
 /* RESPONSIVE */
 @media(max-width:600px){
@@ -264,3 +286,4 @@ button:hover{
 .btn-mic{
   margin-left:3px;
 }
+
