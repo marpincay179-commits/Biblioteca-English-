@@ -550,8 +550,14 @@ function speakParagraph(text){
   speechSynthesis.speak(msg);
 }
 
-function startListening(index){
+async function startListening(index){
 
+  if(isMobile){
+    startRecordingMobile(index);
+    return;
+  }
+
+  // ===== PC (tu sistema actual mejorado) =====
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
   if(!SpeechRecognition){
@@ -559,21 +565,13 @@ function startListening(index){
     return;
   }
 
-  // Crear una sola instancia
   if(!recognition){
     recognition = new SpeechRecognition();
     recognition.lang = "en-US";
-
-    // 🔥 TIEMPO REAL
     recognition.interimResults = true;
-
-    // 🔥 Escucha continua
-    recognition.continuous = true;
-
-    recognition.maxAlternatives = 1;
+    recognition.continuous = false; // 🔥 importante
   }
 
-  //  SI YA ESTÁ ACTIVO → DETENER
   if(listening){
     recognition.stop();
     listening = false;
@@ -595,42 +593,68 @@ function startListening(index){
 
     const spokenWords = transcript.split(/\s+/);
 
-    //  limpiar estado
-    spans.forEach(s => {
-      s.classList.remove("active","correct","incorrect");
-    });
+    spans.forEach(s => s.classList.remove("active","correct","incorrect"));
 
-    //  MARCAR EN TIEMPO REAL
     spokenWords.forEach((word, i) => {
 
       if(!spans[i]) return;
 
       const expected = spans[i].dataset.word;
 
-      // palabra actual
       spans[i].classList.add("active");
 
-      // comparación flexible
-      if(
-        word === expected ||
-        word.includes(expected) ||
-        expected.includes(word)
-      ){
+      if(word === expected || word.includes(expected) || expected.includes(word)){
         spans[i].classList.add("correct");
       } else {
         spans[i].classList.add("incorrect");
       }
-
     });
-
   };
 
   recognition.onerror = function(event){
-    console.error("Error micrófono:", event.error);
+    alert("Error mic: " + event.error);
     listening = false;
   };
 
   recognition.onend = function(){
     listening = false;
   };
+}
+let mediaRecorder;
+let audioChunks = [];
+
+async function startRecordingMobile(index){
+
+  if(listening){
+    mediaRecorder.stop();
+    listening = false;
+    return;
+  }
+
+  try{
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+    mediaRecorder = new MediaRecorder(stream);
+    audioChunks = [];
+
+    mediaRecorder.ondataavailable = e => {
+      audioChunks.push(e.data);
+    };
+
+    mediaRecorder.onstop = () => {
+      const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
+
+      // 🔥 aquí puedes enviar el audio a una API
+      console.log("Audio grabado:", audioBlob);
+
+      alert("Audio grabado ✔ (aquí debes procesarlo con API)");
+    };
+
+    mediaRecorder.start();
+    listening = true;
+
+  }catch(err){
+    alert("No se pudo acceder al micrófono");
+    console.error(err);
+  }
 }
