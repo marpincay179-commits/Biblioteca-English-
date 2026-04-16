@@ -1,3 +1,4 @@
+const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
 let recognition;
 let listening = false;
 /* ===== DATOS LIBROS ===== */
